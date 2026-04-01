@@ -1,4 +1,4 @@
-import { PaletteColorOptions } from '@mui/material/styles';
+import { PaletteColor, PaletteColorOptions } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface PaletteColor {
@@ -7,5 +7,13 @@ declare module '@mui/material/styles' {
 
   interface SimplePaletteColorOptions {
     [key: number]: string;
+  }
+
+  interface Palette {
+    tertiary: PaletteColor;
+  }
+
+  interface PaletteOptions {
+    tertiary?: PaletteColorOptions;
   }
 }
