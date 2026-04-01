@@ -1,9 +1,7 @@
 import BoxHeader from "@/components/BoxHeader";
 import DashboardBox from "@/components/DashboardBox";
 import FlexBetween from "@/components/FlexBetween";
-import { useGetKpisQuery, useGetProductsQuery } from "@/state/api";
 import { Box, Typography, useTheme } from "@mui/material";
-import { useMemo } from "react";
 import {
   Tooltip,
   CartesianGrid,
@@ -19,6 +17,7 @@ import {
   Scatter,
   ZAxis,
 } from "recharts";
+import { kpis, products, transactions } from "@/data/data";
 
 const pieData = [
   { name: "Group A", value: 600 },
@@ -28,36 +27,26 @@ const pieData = [
 const Row2 = () => {
   const { palette } = useTheme();
   const pieColors = [palette.primary[800], palette.primary[300]];
-  const { data: operationalData } = useGetKpisQuery();
-  const { data: productData } = useGetProductsQuery();
+  const operationalData = kpis;
+  const productData = products;
 
-  const operationalExpenses = useMemo(() => {
-    return (
-      operationalData &&
-      operationalData[0].monthlyData.map(
-        ({ month, operationalExpenses, nonOperationalExpenses }) => {
-          return {
-            name: month.substring(0, 3),
-            "Operational Expenses": operationalExpenses,
-            "Non Operational Expenses": nonOperationalExpenses,
-          };
-        }
-      )
-    );
-  }, [operationalData]);
+  const operationalExpenses = operationalData[0].monthlyData.map(
+    ({ month, operationalExpenses, nonOperationalExpenses }) => {
+      return {
+        name: month.substring(0, 3),
+        "Operational Expenses": operationalExpenses,
+        "Non Operational Expenses": nonOperationalExpenses,
+      };
+    }
+  );
 
-  const productExpenseData = useMemo(() => {
-    return (
-      productData &&
-      productData.map(({ _id, price, expense }) => {
-        return {
-          id: _id,
-          price: price,
-          expense: expense,
-        };
-      })
-    );
-  }, [productData]);
+  const productExpenseData = productData.map(({ _id, price, expense }) => {
+    return {
+      id: _id,
+      price: price,
+      expense: expense,
+    };
+  });
 
   return (
     <>

@@ -1,6 +1,5 @@
 import DashboardBox from "@/components/DashboardBox";
 import FlexBetween from "@/components/FlexBetween";
-import { useGetKpisQuery } from "@/state/api";
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useMemo, useState } from "react";
 import {
@@ -15,11 +14,12 @@ import {
   YAxis,
 } from "recharts";
 import regression, { DataPoint } from "regression";
+import { kpis } from "@/data/data";
 
 const Predictions = () => {
   const { palette } = useTheme();
   const [isPredictions, setIsPredictions] = useState(false);
-  const { data: kpiData } = useGetKpisQuery();
+  const kpiData = kpis;
 
   const formattedData = useMemo(() => {
     if (!kpiData) return [];

@@ -13,7 +13,7 @@ const Navbar = () => {
       <FlexBetween gap="0.75rem">
         <BarChartIcon sx={{ fontSize: "28px" }} />
         <Typography variant="h4" fontSize="16px">
-          FinApp
+          Finance Board
         </Typography>
       </FlexBetween>
 

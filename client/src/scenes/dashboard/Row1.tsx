@@ -1,8 +1,6 @@
 import BoxHeader from "@/components/BoxHeader";
 import DashboardBox from "@/components/DashboardBox";
-import { useGetKpisQuery } from "@/state/api";
 import { useTheme } from "@mui/material";
-import { useMemo } from "react";
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -17,48 +15,34 @@ import {
   Tooltip,
   Area,
 } from "recharts";
+import { kpis } from "@/data/data";
 
 const Row1 = () => {
   const { palette } = useTheme();
-  const { data } = useGetKpisQuery();
+  const data = kpis;
 
-  const revenue = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-        };
-      })
-    );
-  }, [data]);
+  const revenue = data[0].monthlyData.map(({ month, revenue }) => {
+    return {
+      name: month.substring(0, 3),
+      revenue: revenue,
+    };
+  });
 
-  const revenueExpenses = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue, expenses }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-          expenses: expenses,
-        };
-      })
-    );
-  }, [data]);
+  const revenueExpenses = data[0].monthlyData.map(({ month, revenue, expenses }) => {
+    return {
+      name: month.substring(0, 3),
+      revenue: revenue,
+      expenses: expenses,
+    };
+  });
 
-  const revenueProfit = useMemo(() => {
-    return (
-      data &&
-      data[0].monthlyData.map(({ month, revenue, expenses }) => {
-        return {
-          name: month.substring(0, 3),
-          revenue: revenue,
-          profit: (revenue - expenses).toFixed(2),
-        };
-      })
-    );
-  }, [data]);
+  const revenueProfit = data[0].monthlyData.map(({ month, revenue, expenses }) => {
+    return {
+      name: month.substring(0, 3),
+      revenue: revenue,
+      profit: (revenue - expenses).toFixed(2),
+    };
+  });
 
   return (
     <>

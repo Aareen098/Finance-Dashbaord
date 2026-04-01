@@ -1,41 +1,31 @@
 import BoxHeader from "@/components/BoxHeader";
 import DashboardBox from "@/components/DashboardBox";
 import FlexBetween from "@/components/FlexBetween";
-import {
-  useGetKpisQuery,
-  useGetProductsQuery,
-  useGetTransactionsQuery,
-} from "@/state/api";
 import { Box, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridCellParams } from "@mui/x-data-grid";
-import { useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
+import { kpis, products, transactions } from "@/data/data";
 
 const Row3 = () => {
   const { palette } = useTheme();
   const pieColors = [palette.primary[800], palette.primary[500]];
 
-  const { data: kpiData } = useGetKpisQuery();
-  const { data: productData } = useGetProductsQuery();
-  const { data: transactionData } = useGetTransactionsQuery();
+  const kpiData = kpis;
+  const productData = products;
+  const transactionData = transactions;
 
-  const pieChartData = useMemo(() => {
-    if (kpiData) {
-      const totalExpenses = kpiData[0].totalExpenses;
-      return Object.entries(kpiData[0].expensesByCategory).map(([key, value]) => {
-        return [
-          {
-            name: key,
-            value: value,
-          },
-          {
-            name: `${key} of Total`,
-            value: totalExpenses - value,
-          },
-        ];
-      });
-    }
-  }, [kpiData]);
+  const pieChartData = Object.entries(kpiData[0].expensesByCategory).map(([key, value]) => {
+    return [
+      {
+        name: key,
+        value: value,
+      },
+      {
+        name: `${key} of Total`,
+        value: kpiData[0].totalExpenses - value,
+      },
+    ];
+  });
 
   const productColumns = [
     {
@@ -115,6 +105,7 @@ const Row3 = () => {
             hideFooter={true}
             rows={productData || []}
             columns={productColumns}
+            getRowId={(row) => row._id}
           />
         </Box>
       </DashboardBox>
@@ -149,13 +140,14 @@ const Row3 = () => {
             hideFooter={true}
             rows={transactionData || []}
             columns={transactionColumns}
+            getRowId={(row) => row._id}
           />
         </Box>
       </DashboardBox>
       <DashboardBox gridArea="i">
         <BoxHeader title="Expense Breakdown By Category" sideText="+4%" />
         <FlexBetween mt="0.5rem" gap="0.5rem" p="0 1rem" textAlign="center">
-          {pieChartData?.map((data, i) => (
+          {pieChartData.map((data, i) => (
             <Box key={`${data[0].name}-${i}`}>
               <PieChart width={110} height={100}>
                 <Pie
@@ -192,10 +184,7 @@ const Row3 = () => {
           ></Box>
         </Box>
         <Typography margin="0 1rem" variant="h6">
-          Orci aliquam enim vel diam. Venenatis euismod id donec mus lorem etiam
-          ullamcorper odio sed. Ipsum non sed gravida etiam urna egestas molestie
-          volutpat et. Malesuada quis pretium aliquet lacinia ornare sed. In volutpat
-          nullam at est id cum pulvinar nunc.
+          Overall Summary and Explanation Data
         </Typography>
       </DashboardBox>
     </>
